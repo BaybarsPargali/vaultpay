@@ -14,8 +14,8 @@ out/
 build/
 dist/
 
-# Environment files
-.env
+# Environment files (keep .env as deployment template)
+# .env is committed (no secrets, just template)
 .env.local
 .env.development.local
 .env.test.local
