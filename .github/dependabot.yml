@@ -1,0 +1,75 @@
+# Dependabot configuration
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
+version: 2
+updates:
+  # NPM dependencies for svp (main app)
+  - package-ecosystem: "npm"
+    directory: "/svp"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "deps"
+    groups:
+      # Group minor/patch updates together
+      production-deps:
+        patterns:
+          - "@solana/*"
+          - "@coral-xyz/*"
+          - "next"
+          - "react"
+          - "react-dom"
+        update-types:
+          - "minor"
+          - "patch"
+      dev-deps:
+        patterns:
+          - "@types/*"
+          - "eslint*"
+          - "typescript"
+          - "tailwindcss"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Arcium SDK requires specific version coordination
+      - dependency-name: "@arcium-hq/client"
+        update-types: ["version-update:semver-major"]
+
+  # NPM dependencies for Anchor program
+  - package-ecosystem: "npm"
+    directory: "/svp/vaultpay_confidential"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "anchor"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "ci"
+
+  # Rust/Cargo dependencies for Anchor program
+  - package-ecosystem: "cargo"
+    directory: "/svp/vaultpay_confidential"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "rust"
+    ignore:
+      # Anchor version must match @coral-xyz/anchor
+      - dependency-name: "anchor-*"
+        update-types: ["version-update:semver-major"]

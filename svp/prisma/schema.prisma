@@ -1,0 +1,154 @@
+// prisma/schema.prisma
+// VaultPay Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // For Supabase: bypasses connection pooler for migrations
+}
+
+// Organization - represents a company/DAO using VaultPay
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  adminWallet String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Token-2022 Confidential Treasury
+  treasuryMint        String?  // Token-2022 mint address
+  treasuryAccount     String?  // Confidential token account
+  elGamalPubKey       String?  // Base64-encoded ElGamal public key for CT
+  encryptedElGamalKey String?  // Encrypted secret key (AES with admin wallet)
+
+  // Arcium Auditor Configuration (Phase 1 Privacy)
+  auditorPubkey       String?  // Base64-encoded x25519 public key for MPC output sealing
+  auditorName         String?  // Display name for auditor (e.g., "Compliance Officer")
+  auditorConfiguredAt DateTime? // When auditor was last configured
+
+  // Squads Multi-sig
+  multisigAddress   String?  // Squads multisig address
+  multisigThreshold Int?     // Required approvals
+  multisigMembers   String?  // JSON array of member pubkeys
+
+  payees                    Payee[]
+  payments                  Payment[]
+  recurringPaymentTemplates RecurringPaymentTemplate[]
+}
+
+// Payee - team members/contractors who receive payments
+model Payee {
+  id                 String   @id @default(cuid())
+  orgId              String
+  name               String
+  email              String
+  walletAddress      String
+  privacyCashAddress String? // Generated stealth address
+  rangeStatus        String   @default("pending") // pending, approved, flagged, rejected
+  rangeRiskScore     Float?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  organization              Organization               @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  payments                  Payment[]
+  recurringPaymentTemplates RecurringPaymentTemplate[]
+
+  @@unique([orgId, email])
+  @@index([orgId])
+  @@index([walletAddress])
+}
+
+// Payment - individual payment records
+model Payment {
+  id             String    @id @default(cuid())
+  orgId          String
+  payeeId        String
+  amount         Decimal   @db.Decimal(20, 9) // 20 digits, 9 decimals for SOL precision
+  token          String    @default("SOL")
+  status         String    @default("pending") // pending, processing, completed, failed, rejected
+  txSignature    String? // Solana transaction signature
+  stealthAddress String? // Privacy Cash stealth address used
+  errorMessage   String? // Error details if failed
+  createdAt      DateTime  @default(now())
+  executedAt     DateTime?
+
+  // Arcium MPC Encryption Fields
+  ciphertext      String? // Base64-encoded encrypted amount (Rescue cipher)
+  nonce           String? // Base64-encoded encryption nonce
+  ephemeralPubKey String? // Base64-encoded ephemeral public key for decryption
+
+  // MPC Computation Tracking (Phase 1)
+  computationOffset String?   // Arcium computation offset (bigint as string)
+  mpcStatus         String?   @default("pending") // pending, queued, processing, finalized, failed
+  mpcTxSignature    String?   // Finalization transaction signature
+  mpcFinalizedAt    DateTime? // When MPC completed
+
+  // Arcium Auditor Sealed Output (Phase 1 Privacy)
+  auditorSealedOutput String?  // Base64-encoded sealed MPC result for auditor
+  auditorSealedAt     DateTime? // When result was sealed
+
+  // Multi-sig Approval (Phase 5)
+  requiresApproval   Boolean @default(false)
+  approvalProposalId String? // Squads proposal address
+  approvalStatus     String? // pending, approved, rejected, executed
+  approvedBy         String? // JSON array of approver pubkeys
+
+  // Recurring Payment Link (Phase 5)
+  isRecurring       Boolean   @default(false)
+  recurringSchedule String?   // weekly, biweekly, monthly
+  nextPaymentDate   DateTime?
+  parentPaymentId   String?   // Links to original recurring payment template
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  payee        Payee        @relation(fields: [payeeId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@index([payeeId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([mpcStatus])
+  @@index([isRecurring])
+}
+
+// Recurring Payment Template - defines recurring payment schedules
+model RecurringPaymentTemplate {
+  id          String    @id @default(cuid())
+  orgId       String
+  payeeId     String
+  amount      Decimal   @db.Decimal(20, 9) // 20 digits, 9 decimals for SOL precision
+  token       String    @default("SOL")
+  schedule    String    // weekly, biweekly, monthly
+  nextRunDate DateTime
+  lastRunDate DateTime?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  payee        Payee        @relation(fields: [payeeId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@index([payeeId])
+  @@index([isActive])
+  @@index([nextRunDate])
+}
+
+// Compliance Attestation - on-chain compliance status cache
+model ComplianceAttestation {
+  id         String   @id @default(cuid())
+  wallet     String   @unique
+  status     String   // pending, approved, flagged, rejected
+  riskScore  Int?
+  screenedAt DateTime
+  expiresAt  DateTime
+  pdaAddress String?  // On-chain PDA address
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([wallet])
+  @@index([expiresAt])
+}
