@@ -1,0 +1,54 @@
+# VaultPay Docker Compose
+# For local testing of production build with full privacy
+
+version: '3.8'
+
+services:
+  vaultpay:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      # Database
+      - DATABASE_URL=${DATABASE_URL}
+      - DIRECT_URL=${DIRECT_URL}
+      
+      # Solana
+      - NEXT_PUBLIC_SOLANA_NETWORK=devnet
+      - NEXT_PUBLIC_HELIUS_API_KEY=${NEXT_PUBLIC_HELIUS_API_KEY}
+      - NEXT_PUBLIC_HELIUS_RPC_URL=${NEXT_PUBLIC_HELIUS_RPC_URL}
+      
+      # Arcium MPC
+      - NEXT_PUBLIC_ARCIUM_PROGRAM_ID=F3G6Q9tRicyznCqcZLydJ6RxkwDSBeHWM458J7V6aeyk
+      - NEXT_PUBLIC_VAULTPAY_PROGRAM_ID=ARQq9rbUZLJLSUSmcrUuQH37TC66Euown4yXBJJj9UbJ
+      - NEXT_PUBLIC_ARCIUM_MXE_ACCOUNT=13a5kaHnbkC8RsMcrtEtAyEuj1jYZZs941regeuKS4bk
+      - NEXT_PUBLIC_ARCIUM_CLUSTER_OFFSET=123
+      
+      # Token-2022 Confidential
+      - NEXT_PUBLIC_CONFIDENTIAL_MINT=Eu6LtYwCWvLQpsr2J1gdRRtsTQdUu6G3vnAQ8CCPLsRo
+      - SOLANA_KEYPAIR_PATH=/app/.config/solana/id.json
+      
+      # Range Compliance
+      - RANGE_API_KEY=${RANGE_API_KEY}
+      
+      # Auth
+      - AUTH_JWT_SECRET=${AUTH_JWT_SECRET}
+      
+      # Logging
+      - LOG_LEVEL=info
+      - NODE_ENV=production
+    
+    volumes:
+      # Mount keypair for signing CT transactions
+      - ./id.json:/app/.config/solana/id.json:ro
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

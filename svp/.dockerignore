@@ -1,0 +1,59 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.next
+out
+build
+dist
+
+# Development files
+*.log
+npm-debug.log*
+.DS_Store
+
+# Environment files (we inject these at runtime)
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Test files
+coverage
+.nyc_output
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+__tests__
+vitest.config.ts
+
+# Documentation
+*.md
+!README.md
+
+# Keypairs (mount these as volumes, don't bake into image)
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!next-env.d.ts
+
+# Development scripts
+scripts/
+
+# Anchor/Arcium program source (not needed at runtime)
+vaultpay_confidential/
+
+# Patches are needed for npm ci
+!patches/
