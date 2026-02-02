@@ -29,7 +29,7 @@
     "db:migrate:prod": "prisma migrate deploy"
   },
   "dependencies": {
-    "@arcium-hq/client": "^0.5.4",
+    "@arcium-hq/client": "^0.6.6",
     "@coral-xyz/anchor": "^0.32.1",
     "@prisma/client": "^5.22.0",
     "@solana/spl-token": "^0.4.14",
