@@ -10,8 +10,8 @@
 
 <br />
 
-[![Live Demo](https://img.shields.io/badge/🚀_Try_Demo-vaultpay.vercel.app-9333EA?style=for-the-badge&logoColor=white)](https://vaultpay.vercel.app)
-[![Watch Video](https://img.shields.io/badge/▶️_Watch_Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://vaultpay.vercel.app)
+[![Live Demo](https://img.shields.io/badge/🚀_Try_Demo-solanavaultpay.vercel.app-9333EA?style=for-the-badge&logoColor=white)](https://solanavaultpay.vercel.app)
+[![Watch Video](https://img.shields.io/badge/▶️_Watch_Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://solanavaultpay.vercel.app)
 
 <br />
 
@@ -24,7 +24,7 @@
 
 <br />
 
-[**🚀 Demo**](https://vaultpay.vercel.app) · [**📖 Technical Spec**](VaultPay-Technical-Specification.md) · [**🏗️ Architecture**](svp/PRIVACY-ARCHITECTURE.md) · [**🗺️ Roadmap**](svp/ROADMAP.md)
+[**🚀 Demo**](https://solanavaultpay.vercel.app) · [**📖 Technical Spec**](VaultPay-Technical-Specification.md) · [**🏗️ Architecture**](svp/PRIVACY-ARCHITECTURE.md) · [**🗺️ Roadmap**](svp/ROADMAP.md)
 
 </div>
 
@@ -377,7 +377,7 @@ docker run -p 3000:3000 \
 
 | | | | |
 |:---:|:---:|:---:|:---:|
-| [🚀 **Live Demo**](https://vaultpay.vercel.app) | [📖 **Technical Spec**](VaultPay-Technical-Specification.md) | [🏗️ **Architecture**](svp/PRIVACY-ARCHITECTURE.md) | [🗺️ **Roadmap**](svp/ROADMAP.md) |
+| [🚀 **Live Demo**](https://solanavaultpay.vercel.app) | [📖 **Technical Spec**](VaultPay-Technical-Specification.md) | [🏗️ **Architecture**](svp/PRIVACY-ARCHITECTURE.md) | [🗺️ **Roadmap**](svp/ROADMAP.md) |
 
 </div>
 
