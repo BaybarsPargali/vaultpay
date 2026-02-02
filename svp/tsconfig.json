@@ -35,6 +35,9 @@
   ],
   "exclude": [
     "node_modules",
-    "vaultpay_confidential"
+    "vaultpay_confidential",
+    "vitest.config.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ]
 }
