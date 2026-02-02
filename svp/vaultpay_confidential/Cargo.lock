@@ -319,7 +319,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "acdacd8e6864a5bfb46a22953f5234f98fbfe721b26538ef84ac3299dd4b5989"
 dependencies = [
  "aes",
- "arcis-interface",
+ "arcis-interface 0.5.4",
  "arcis-internal-expr-macro",
  "arcium-core-utils",
  "arcium-primitives",
@@ -381,6 +381,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "arcis-interface"
+version = "0.6.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3bbb48b33936ffe11e35d1c48acae07a086177693eea7e1ec62c0ce8ddc3014c"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "arcis-internal-expr-macro"
 version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -400,7 +410,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e921f0a75be332668e5bca5e6566973a32c324942f5d87c1b1c408db24b1f584"
 dependencies = [
  "arcis",
- "arcis-interface",
+ "arcis-interface 0.5.4",
  "cargo_metadata",
  "ff",
  "indexmap 2.13.0",
@@ -423,15 +433,16 @@ dependencies = [
 
 [[package]]
 name = "arcium-anchor"
-version = "0.5.4"
+version = "0.6.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "91510c469191585f48642786756ace082c88d5d2db01b478859eb4609266bd9e"
+checksum = "3dbb02cca1353551dbeda4db4e62936db0dff110fadf1222bb3c32a5a582515e"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
- "arcium-client",
- "arcium-macros",
+ "arcium-client 0.6.6",
+ "arcium-macros 0.6.6",
  "sha2-const-stable",
+ "solana-address-lookup-table-interface",
  "solana-alt-bn128-bls",
 ]
 
@@ -444,6 +455,21 @@ dependencies = [
  "anchor-lang",
  "bytemuck",
  "const-crypto",
+ "solana-alt-bn128-bls",
+ "solana-program",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "arcium-client"
+version = "0.6.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0ee1feade979538f3862b292beecff1e927cc830ff307a9cdf24ee1b897e4e04"
+dependencies = [
+ "anchor-lang",
+ "bytemuck",
+ "const-crypto",
+ "solana-address-lookup-table-interface",
  "solana-alt-bn128-bls",
  "solana-program",
  "thiserror 2.0.17",
@@ -480,7 +506,22 @@ version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c54425fea62f282ee4fe9547f3a76e4ba9356d6bab71034d56c93f4481aa1c2"
 dependencies = [
- "arcis-interface",
+ "arcis-interface 0.5.4",
+ "convert_case",
+ "proc-macro2",
+ "quote",
+ "serde_json",
+ "sha2 0.10.9",
+ "syn 2.0.114",
+]
+
+[[package]]
+name = "arcium-macros"
+version = "0.6.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6953e689bb533783bd4b34e39ad3a452d43f8826f7f637a38c4dc7bd7c8da9ab"
+dependencies = [
+ "arcis-interface 0.6.6",
  "convert_case",
  "proc-macro2",
  "quote",
@@ -5322,8 +5363,8 @@ version = "0.1.0"
 dependencies = [
  "anchor-lang",
  "arcium-anchor",
- "arcium-client",
- "arcium-macros",
+ "arcium-client 0.5.4",
+ "arcium-macros 0.5.4",
  "constant_time_eq 0.3.1",
 ]
 
