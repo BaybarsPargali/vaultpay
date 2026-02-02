@@ -10,7 +10,7 @@
     "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
   },
   "dependencies": {
-    "@arcium-hq/client": "0.5.4",
+    "@arcium-hq/client": "0.7.0",
     "@coral-xyz/anchor": "^0.32.1"
   },
   "devDependencies": {
