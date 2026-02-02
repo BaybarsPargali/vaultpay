@@ -10,9 +10,13 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 // Import wallet adapter styles
 import '@solana/wallet-adapter-react-ui/styles.css';
 
-// Get Helius RPC URL from environment
+// Get RPC URL - prefer explicit URL, then Helius with key, fallback to public devnet
+const HELIUS_API_KEY = process.env.NEXT_PUBLIC_HELIUS_API_KEY || '';
+const HAS_HELIUS_KEY = HELIUS_API_KEY.length > 0;
 const HELIUS_RPC_URL = process.env.NEXT_PUBLIC_HELIUS_RPC_URL || 
-  `https://devnet.helius-rpc.com/?api-key=${process.env.NEXT_PUBLIC_HELIUS_API_KEY}`;
+  (HAS_HELIUS_KEY 
+    ? `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`
+    : 'https://api.devnet.solana.com');
 
 interface ProvidersProps {
   children: ReactNode;

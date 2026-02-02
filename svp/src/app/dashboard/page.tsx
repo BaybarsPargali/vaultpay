@@ -68,7 +68,7 @@ export default function DashboardPage() {
       p.status === 'completed'
     );
   });
-  const thisMonthTotal = thisMonthPayments.reduce((sum, p) => sum + p.amount, 0);
+  const thisMonthTotal = thisMonthPayments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
   const recentPayments = payments.slice(0, 5);
 
   return (

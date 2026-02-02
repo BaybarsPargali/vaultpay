@@ -123,7 +123,7 @@ export default function AuditPage() {
 
   // Calculate stats
   const completedPayments = payments.filter((p) => p.status === 'completed');
-  const totalPaid = completedPayments.reduce((sum, p) => sum + p.amount, 0);
+  const totalPaid = completedPayments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
   const failedPayments = payments.filter(
     (p) => p.status === 'failed' || p.status === 'rejected'
   );

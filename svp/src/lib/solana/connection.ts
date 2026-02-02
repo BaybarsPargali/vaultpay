@@ -1,20 +1,26 @@
 // src/lib/solana/connection.ts
 import { Connection, clusterApiUrl } from '@solana/web3.js';
 
-// RPC URLs
+// RPC URLs - Use Helius only if API key is provided
 const HELIUS_API_KEY = process.env.NEXT_PUBLIC_HELIUS_API_KEY || '';
+const HAS_HELIUS_KEY = HELIUS_API_KEY.length > 0;
 
-export const HELIUS_MAINNET_URL = `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
-export const HELIUS_DEVNET_URL = `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
-
-// Fallback RPC URLs (in case primary fails)
+// Fallback RPC URLs (public endpoints)
 const FALLBACK_MAINNET_URL = 'https://api.mainnet-beta.solana.com';
 const FALLBACK_DEVNET_URL = 'https://api.devnet.solana.com';
+
+// Helius URLs (only used if API key exists)
+export const HELIUS_MAINNET_URL = HAS_HELIUS_KEY 
+  ? `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`
+  : FALLBACK_MAINNET_URL;
+export const HELIUS_DEVNET_URL = HAS_HELIUS_KEY 
+  ? `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`
+  : FALLBACK_DEVNET_URL;
 
 // Get network from environment
 const NETWORK = process.env.NEXT_PUBLIC_SOLANA_NETWORK || 'devnet';
 
-// Select RPC URL based on network
+// Select RPC URL based on network (uses fallback if no Helius key)
 export const RPC_URL = NETWORK === 'mainnet-beta' ? HELIUS_MAINNET_URL : HELIUS_DEVNET_URL;
 export const FALLBACK_URL = NETWORK === 'mainnet-beta' ? FALLBACK_MAINNET_URL : FALLBACK_DEVNET_URL;
 

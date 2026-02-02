@@ -137,7 +137,7 @@ export function PaymentHistory({
                   <td className="py-4">
                     <div>
                       <span className="text-white font-medium">
-                        {(payment.amount ?? 0).toFixed(4)} {payment.token || 'SOL'}
+                        {Number(payment.amount ?? 0).toFixed(4)} {payment.token || 'SOL'}
                       </span>
                       {payment.ciphertext && (
                         <div className="flex items-center gap-1 mt-1">

@@ -72,7 +72,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen min-h-screen-dvh bg-gradient-to-br from-gray-900 via-purple-900/80 to-gray-900 relative gradient-mesh">
+    <main className="min-h-screen min-h-screen-dvh bg-gradient-to-br from-gray-900 via-purple-900/80 to-gray-900 relative gradient-mesh" suppressHydrationWarning>
       {/* Background Glow Effects - Responsive sizing */}
       <div className="absolute top-0 left-1/4 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-purple-500/20 rounded-full blur-3xl pointer-events-none animate-float" />
       <div className="absolute top-1/3 right-1/4 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-pink-500/15 rounded-full blur-3xl pointer-events-none" style={{ animationDelay: '2s' }} />
@@ -96,7 +96,7 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 md:py-20 text-center">
+      <section className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 md:py-20 text-center" suppressHydrationWarning>
         <div className="inline-flex items-center gap-2 bg-purple-500/20 backdrop-blur-md text-purple-300 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm mb-4 border border-purple-500/30 glass">
           <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-pulse"></span>
           Live on Solana Devnet
@@ -138,28 +138,6 @@ export default function HomePage() {
             className="bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 rounded-xl py-3.5 px-6 sm:px-8 text-base sm:text-lg transition-all hover:scale-105 backdrop-blur-md border border-purple-500/20 text-center glass"
           >
             View Roadmap
-          </a>
-        </div>
-
-        {/* Partner Ecosystem Stats - Real data from Squads, Range, and Helius (as of Jan 2026) */}
-        <div className="grid grid-cols-1 xs:grid-cols-3 gap-3 sm:gap-6 md:gap-8 max-w-3xl w-full px-4 sm:px-0" suppressHydrationWarning>
-          <a href="https://squads.so" target="_blank" rel="noopener noreferrer" className="text-center glass-card rounded-2xl p-4 sm:p-6 hover:border-purple-500/30 transition-all cursor-pointer group">
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white group-hover:text-purple-300 transition-colors">
-              $<AnimatedCounter end={15} suffix="B+" />
-            </div>
-            <div className="text-gray-400 text-xs sm:text-sm mt-1">Secured by Squads</div>
-          </a>
-          <a href="https://range.org" target="_blank" rel="noopener noreferrer" className="text-center glass-card rounded-2xl p-4 sm:p-6 hover:border-purple-500/30 transition-all cursor-pointer group">
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white group-hover:text-purple-300 transition-colors">
-              $<AnimatedCounter end={35} suffix="B+" />
-            </div>
-            <div className="text-gray-400 text-xs sm:text-sm mt-1">Protected by Range</div>
-          </a>
-          <a href="https://squads.so" target="_blank" rel="noopener noreferrer" className="text-center glass-card rounded-2xl p-4 sm:p-6 hover:border-purple-500/30 transition-all cursor-pointer group">
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white group-hover:text-purple-300 transition-colors">
-              <AnimatedCounter end={450} suffix="+" />
-            </div>
-            <div className="text-gray-400 text-xs sm:text-sm mt-1">Teams Trust Squads</div>
           </a>
         </div>
       </section>
