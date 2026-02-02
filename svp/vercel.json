@@ -41,6 +41,5 @@
   },
   "env": {
     "NEXT_PUBLIC_SOLANA_NETWORK": "devnet"
-  },
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- ./svp"
+  }
 }

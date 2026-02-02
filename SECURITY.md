@@ -16,7 +16,7 @@ We take security vulnerabilities seriously. If you discover a security issue in 
 
 Instead, please report vulnerabilities by emailing:
 
-📧 **security@vaultpay.io** (or create a private security advisory on GitHub)
+📧 **baybarspargali@gmail.com** (or create a private security advisory on GitHub)
 
 ### What to Include
 
