@@ -1,28 +1,38 @@
 <div align="center">
 
-# 🔐 VaultPay
+<img src="svp/public/icons/icon-192.png" alt="VaultPay" width="80" />
 
-### Private Payroll Infrastructure for Solana
+# VaultPay
+
+### 🔐 Private Payroll Infrastructure for Solana
 
 **Pay your team without exposing salaries on-chain.**
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-vaultpay.vercel.app-purple?style=for-the-badge)](https://vaultpay.vercel.app)
+<br />
 
-[![Solana](https://img.shields.io/badge/Solana-Devnet-14F195?logo=solana&logoColor=white)](https://solana.com)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
-[![License](https://img.shields.io/badge/License-GPL--3.0-blue)](LICENSE)
-[![Devnet Ready](https://img.shields.io/badge/Status-100%25_Devnet_Ready-success)]()
+[![Live Demo](https://img.shields.io/badge/🚀_Try_Demo-vaultpay.vercel.app-9333EA?style=for-the-badge&logoColor=white)](https://vaultpay.vercel.app)
+[![Watch Video](https://img.shields.io/badge/▶️_Watch_Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://vaultpay.vercel.app)
 
 <br />
 
-[**Demo**](https://vaultpay.vercel.app) · [**Technical Spec**](VaultPay-Technical-Specification.md) · [**Architecture**](svp/PRIVACY-ARCHITECTURE.md) · [**Roadmap**](svp/ROADMAP.md)
+[![Solana](https://img.shields.io/badge/Solana-Devnet-14F195?logo=solana&logoColor=white)](https://solana.com)
+[![Anchor](https://img.shields.io/badge/Anchor-0.30-coral?logo=anchor&logoColor=white)](https://anchor-lang.com)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![License](https://img.shields.io/badge/License-GPL--3.0-blue)](LICENSE)
+[![Devnet](https://img.shields.io/badge/Status-100%25_Devnet_Ready-22C55E)]()
+
+<br />
+
+[**🚀 Demo**](https://vaultpay.vercel.app) · [**📖 Technical Spec**](VaultPay-Technical-Specification.md) · [**🏗️ Architecture**](svp/PRIVACY-ARCHITECTURE.md) · [**🗺️ Roadmap**](svp/ROADMAP.md)
 
 </div>
 
 ---
 
-## 🔥 Why VaultPay?
+## 🔥 The Problem
+
+> **$2.3 trillion** in annual payroll runs on-chain with **zero privacy**.
 
 <table>
 <tr>
@@ -38,10 +48,11 @@ Explorer shows:
 └── Everyone knows everyone's salary 😱
 ```
 
-- Salaries visible to **anyone**
-- Competitors see your burn rate
-- Violates employee privacy
-- GDPR/compliance nightmare
+**Problems:**
+- 🔍 Salaries visible to **competitors**
+- 📊 Burn rate exposed publicly
+- ⚖️ GDPR/CCPA violations
+- 😞 Employee dissatisfaction
 
 </td>
 <td width="50%">
@@ -56,10 +67,11 @@ Explorer shows:
 └── Only ciphertext on-chain 🔐
 ```
 
-- Amounts **encrypted** (ElGamal + ZK proofs)
-- Only sender & recipient know the amount
-- Compliant with privacy regulations
-- Automatic OFAC screening
+**Solution:**
+- 🔐 Amounts **encrypted** (ElGamal + ZK)
+- 👤 Only sender & recipient see amounts
+- ✅ Regulatory compliant
+- 🛡️ Automatic OFAC screening
 
 </td>
 </tr>
@@ -67,117 +79,169 @@ Explorer shows:
 
 ---
 
-## 🏗️ Dual Privacy Architecture
+## 🏗️ How It Works
 
 VaultPay implements **two layers of privacy** that work together:
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         VAULTPAY PRIVACY FLOW                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│   ┌──────────┐    ┌──────────────┐    ┌───────────┐    ┌──────────────┐    │
-│   │  Build   │───▶│  ZK Proofs   │───▶│ Compliance│───▶│   Co-Sign    │    │
-│   │    TX    │    │ (Bulletproof)│    │  (Range)  │    │(Arcium MPC)  │    │
-│   └──────────┘    └──────────────┘    └───────────┘    └──────────────┘    │
-│        │                 │                  │                  │            │
-│        ▼                 ▼                  ▼                  ▼            │
-│   ┌──────────────────────────────────────────────────────────────────┐     │
-│   │              ON-CHAIN: Only encrypted ciphertext                  │     │
-│   └──────────────────────────────────────────────────────────────────┘     │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+                              VAULTPAY PRIVACY PIPELINE
+   ┌─────────────────────────────────────────────────────────────────────────────┐
+   │                                                                             │
+   │    PAYER                                                          PAYEE     │
+   │   ┌─────┐                                                       ┌─────┐    │
+   │   │ 👤  │                                                       │ 👤  │    │
+   │   └──┬──┘                                                       └──▲──┘    │
+   │      │                                                             │        │
+   │      ▼                                                             │        │
+   │   ┌─────────┐    ┌──────────────┐    ┌───────────┐    ┌────────────┴───┐   │
+   │   │ BUILD   │───▶│   ENCRYPT    │───▶│  SCREEN   │───▶│   CO-SIGN &    │   │
+   │   │   TX    │    │  (ElGamal)   │    │  (Range)  │    │    SUBMIT      │   │
+   │   └─────────┘    └──────────────┘    └───────────┘    └────────────────┘   │
+   │                         │                  │                  │             │
+   │                         ▼                  ▼                  ▼             │
+   │                  ┌────────────┐     ┌────────────┐     ┌────────────┐       │
+   │                  │ Bulletproof│     │   OFAC &   │     │  Arcium    │       │
+   │                  │  ZK Proofs │     │ Sanctions  │     │ MPC 2-of-2 │       │
+   │                  └────────────┘     └────────────┘     └────────────┘       │
+   │                                                                             │
+   │   ═══════════════════════════════════════════════════════════════════════   │
+   │   📜 ON-CHAIN: Only encrypted ciphertext — amounts NEVER visible            │
+   │   ═══════════════════════════════════════════════════════════════════════   │
+   │                                                                             │
+   └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-| Layer | Technology | What It Does |
-|:-----:|:-----------|:-------------|
-| **Layer 1** | **Token-2022 Confidential Transfers** | Amounts encrypted with Twisted ElGamal + Bulletproof ZK proofs |
-| **Layer 2** | **Arcium MPC Co-Signer** | 2-of-2 multisig that only signs after compliance passes |
+### Privacy Layers Explained
+
+| Layer | Technology | Purpose | Implementation |
+|:-----:|:-----------|:--------|:---------------|
+| **1** | **Token-2022 Confidential Transfers** | Hide amounts on-chain | Twisted ElGamal encryption + Bulletproof ZK range proofs |
+| **2** | **Arcium MPC Co-Signer** | Enforce compliance before payment | 2-of-2 multisig that only signs after Range OFAC check passes |
+
+> 💡 **Why two layers?** Token-2022 encrypts the amounts, but Arcium ensures bad actors can't use the privacy for illicit purposes. Both must pass for payment to succeed.
 
 ---
 
 ## ⚡ Features
 
-| Feature | Description | Status |
-|:--------|:------------|:------:|
-| 🔐 **Encrypted Payments** | ElGamal encryption with ZK proofs - amounts never visible | ✅ |
-| 🛡️ **Compliance Co-Signer** | Arcium MPC gates payments through Range OFAC screening | ✅ |
-| 📊 **Dashboard** | Full payee management, payment history, organization settings | ✅ |
-| 🔑 **Wallet Auth** | Sign-in with Phantom, Solflare, or Backpack | ✅ |
-| 👥 **Squads Multi-sig** | Enterprise treasury controls | ✅ |
-| 📱 **Mobile Ready** | Responsive design with PWA support | ✅ |
-| 🎨 **Privacy Shield Animation** | Visual feedback: ZK → Encryption → Compliance | ✅ |
-| 📈 **Audit Trail** | Encrypted logs for authorized auditors | ✅ |
+<table>
+<tr>
+<td>
+
+### 🔐 Core Privacy
+| Feature | Status |
+|:--------|:------:|
+| ElGamal encrypted amounts | ✅ |
+| Bulletproof ZK range proofs | ✅ |
+| Arcium MPC co-signing | ✅ |
+| Range OFAC screening | ✅ |
+
+</td>
+<td>
+
+### 📊 Dashboard
+| Feature | Status |
+|:--------|:------:|
+| Payee management | ✅ |
+| Payment history | ✅ |
+| Batch payroll | ✅ |
+| Organization settings | ✅ |
+
+</td>
+<td>
+
+### 🔗 Integrations
+| Feature | Status |
+|:--------|:------:|
+| Squads multi-sig | ✅ |
+| Phantom/Solflare/Backpack | ✅ |
+| Helius RPC | ✅ |
+| Mobile responsive | ✅ |
+
+</td>
+</tr>
+</table>
+
+### ✨ UI Highlights
+
+- **Privacy Shield Animation** — Visual feedback showing ZK proof → Encryption → Compliance flow
+- **One-Click Payroll** — Configure once, pay your whole team with a single click
+- **Real-time Status** — Watch your encrypted transaction propagate through the network
 
 ---
 
 ## 🛠️ Tech Stack
 
+<table>
+<tr>
+<td width="50%">
+
+### Application
 | Layer | Technology |
 |:------|:-----------|
 | **Frontend** | Next.js 14, React 18, TailwindCSS |
-| **Blockchain** | Solana, Anchor Framework, Token-2022 |
-| **Privacy** | Arcium MPC, Twisted ElGamal, Bulletproofs |
-| **Compliance** | Range Protocol (OFAC/sanctions) |
-| **Database** | PostgreSQL (Supabase) |
-| **Infrastructure** | Helius RPC, Squads Multi-sig |
+| **Backend** | Next.js API Routes, tRPC |
+| **Database** | PostgreSQL via Supabase |
+| **Auth** | Wallet-based (SIWS) |
 
-### Infrastructure Partners
+</td>
+<td width="50%">
 
-| Partner | Role |
-|:--------|:-----|
-| **[Arcium](https://arcium.com)** | MPC encryption & co-signer |
-| **[Range](https://range.org)** | Real-time OFAC/sanctions screening |
-| **[Squads](https://squads.so)** | Enterprise treasury controls |
-| **[Helius](https://helius.dev)** | SOC 2 certified RPC |
+### Blockchain
+| Layer | Technology |
+|:------|:-----------|
+| **Network** | Solana (Devnet → Mainnet) |
+| **Programs** | Anchor 0.30, Token-2022 |
+| **Privacy** | ElGamal, Bulletproofs, Arcium MPC |
+| **Compliance** | Range Protocol |
+
+</td>
+</tr>
+</table>
+
+### 🤝 Infrastructure Partners
+
+<div align="center">
+
+| [![Arcium](https://img.shields.io/badge/Arcium-MPC_Encryption-8B5CF6?style=for-the-badge&logoColor=white)](https://arcium.com) | [![Range](https://img.shields.io/badge/Range-OFAC_Compliance-22C55E?style=for-the-badge&logoColor=white)](https://range.org) | [![Squads](https://img.shields.io/badge/Squads-Multi--sig-EAB308?style=for-the-badge&logoColor=white)](https://squads.so) | [![Helius](https://img.shields.io/badge/Helius-RPC-F97316?style=for-the-badge&logoColor=white)](https://helius.dev) |
+|:---:|:---:|:---:|:---:|
+| MPC Co-Signer | Sanctions Screening | Treasury Controls | SOC 2 RPC |
+
+</div>
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Node.js ≥20.18.0
-- npm
-
-### Installation
-
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/vaultpay.git
-cd vaultpay/svp
-
-# Install dependencies
+# Clone & install
+git clone https://github.com/YOUR_USERNAME/vaultpay.git && cd vaultpay/svp
 npm install
 
-# Set up environment (edit with your keys)
+# Configure environment
 cp .env .env.local
+# Edit .env.local with your DATABASE_URL and AUTH_JWT_SECRET
 
-# Run database migrations
-npm run db:push
-
-# Start development server
-npm run dev
+# Run
+npm run db:push && npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) 🎉
+> 🌐 Open [localhost:3000](http://localhost:3000) and connect your wallet!
 
-### Environment Variables
+<details>
+<summary><b>📋 Environment Variables Reference</b></summary>
 
-```env
-# 🔴 Required
-DATABASE_URL="postgresql://..."        # Supabase connection string
-AUTH_JWT_SECRET="generate-random-64"   # node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+| Variable | Required | Description |
+|:---------|:--------:|:------------|
+| `DATABASE_URL` | 🔴 Yes | PostgreSQL connection string (Supabase) |
+| `AUTH_JWT_SECRET` | 🔴 Yes | 64-char hex: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
+| `NEXT_PUBLIC_SOLANA_NETWORK` | 🟢 Pre-set | `devnet` (change to `mainnet-beta` for production) |
+| `NEXT_PUBLIC_VAULTPAY_PROGRAM_ID` | 🟢 Pre-set | `ARQq9rbUZLJLSUSmcrUuQH37TC66Euown4yXBJJj9UbJ` |
+| `NEXT_PUBLIC_CONFIDENTIAL_MINT` | 🟢 Pre-set | `Eu6LtYwCWvLQpsr2J1gdRRtsTQdUu6G3vnAQ8CCPLsRo` |
+| `NEXT_PUBLIC_HELIUS_API_KEY` | 🟡 Optional | [helius.dev](https://dev.helius.xyz) — improves RPC reliability |
+| `RANGE_API_KEY` | 🟡 Optional | [range.org](https://range.org) — enables OFAC screening |
 
-# 🟢 Pre-configured (Devnet) - No changes needed
-NEXT_PUBLIC_SOLANA_NETWORK="devnet"
-NEXT_PUBLIC_VAULTPAY_PROGRAM_ID="ARQq9rbUZLJLSUSmcrUuQH37TC66Euown4yXBJJj9UbJ"
-NEXT_PUBLIC_CONFIDENTIAL_MINT="Eu6LtYwCWvLQpsr2J1gdRRtsTQdUu6G3vnAQ8CCPLsRo"
-
-# 🟡 Optional (enhances functionality)
-NEXT_PUBLIC_HELIUS_API_KEY=""          # https://dev.helius.xyz
-RANGE_API_KEY=""                        # https://range.org
-```
+</details>
 
 ---
 
@@ -185,122 +249,198 @@ RANGE_API_KEY=""                        # https://range.org
 
 ```
 vaultpay/
-├── svp/                              # 📦 Main Next.js Application
-│   ├── src/
-│   │   ├── app/                      # Next.js App Router
-│   │   │   ├── api/payments/         #   └── Payment API endpoints
-│   │   │   ├── dashboard/            #   └── Dashboard page
-│   │   │   └── payroll/              #   └── Execute payments
-│   │   ├── components/               # React Components
-│   │   │   ├── privacy/              #   └── CT Setup, Privacy badges
-│   │   │   └── payment/              #   └── Payment modals
-│   │   ├── hooks/                    # React Hooks
-│   │   │   ├── useConfidentialPayment.ts
-│   │   │   └── useCoSignedPayment.ts
-│   │   └── lib/                      # Core Libraries
-│   │       ├── arcium/               #   └── MPC program client
-│   │       ├── confidential/         #   └── Token-2022 CT bridge
-│   │       ├── cosigner/             #   └── Co-signer implementation
-│   │       └── range/                #   └── Compliance client
-│   ├── prisma/                       # Database Schema
-│   └── vaultpay_confidential/        # 🦀 Anchor/Arcium Program
-├── VaultPay-Technical-Specification.md
-└── README.md
+├── 📄 README.md                           # You are here
+├── 📄 VaultPay-Technical-Specification.md # Full technical documentation
+│
+└── 📦 svp/                                # Main Application
+    ├── 📂 src/
+    │   ├── 📂 app/                        # Next.js App Router
+    │   │   ├── 📂 api/payments/           # REST API endpoints
+    │   │   ├── 📂 dashboard/              # Main dashboard
+    │   │   ├── 📂 payroll/                # Execute payments
+    │   │   └── 📂 audit/                  # Audit interface
+    │   │
+    │   ├── 📂 components/
+    │   │   ├── 📂 privacy/                # CT setup, privacy badges
+    │   │   ├── 📂 payment/                # Payment modals & flows
+    │   │   └── 📂 wallet/                 # Wallet connection UI
+    │   │
+    │   ├── 📂 hooks/
+    │   │   ├── useConfidentialPayment.ts  # Token-2022 CT hook
+    │   │   └── useCoSignedPayment.ts      # Arcium MPC hook
+    │   │
+    │   └── 📂 lib/
+    │       ├── 📂 arcium/                 # MPC client SDK
+    │       ├── 📂 confidential/           # Token-2022 bridge
+    │       ├── 📂 cosigner/               # Co-signer service
+    │       └── 📂 range/                  # Compliance API
+    │
+    ├── 📂 prisma/                         # Database schema
+    │
+    └── 📂 vaultpay_confidential/          # 🦀 Anchor/Arcium Program
+        ├── 📂 programs/                   # Rust smart contracts
+        ├── 📂 encrypted-ixs/              # Encrypted instruction handlers
+        └── 📂 tests/                      # Integration tests
 ```
 
 ---
 
 ## 🔐 Deployed Infrastructure (Devnet)
 
-| Component | Address |
-|:----------|:--------|
-| **VaultPay Program** | `ARQq9rbUZLJLSUSmcrUuQH37TC66Euown4yXBJJj9UbJ` |
-| **Arcium MXE** | `13a5kaHnbkC8RsMcrtEtAyEuj1jYZZs941regeuKS4bk` |
-| **Arcium Cluster** | `945zoPijX8CA5c8dquvkq4ndqDWpPXGHekmVDjoDx26H` |
-| **Confidential Mint (VPAY)** | `Eu6LtYwCWvLQpsr2J1gdRRtsTQdUu6G3vnAQ8CCPLsRo` |
+> All contracts are deployed and verified on Solana Devnet
+
+| Component | Address | Explorer |
+|:----------|:--------|:---------|
+| **VaultPay Program** | `ARQq9rbUZLJLSUSmcrUuQH37TC66Euown4yXBJJj9UbJ` | [View ↗](https://solscan.io/account/ARQq9rbUZLJLSUSmcrUuQH37TC66Euown4yXBJJj9UbJ?cluster=devnet) |
+| **Arcium MXE** | `13a5kaHnbkC8RsMcrtEtAyEuj1jYZZs941regeuKS4bk` | [View ↗](https://solscan.io/account/13a5kaHnbkC8RsMcrtEtAyEuj1jYZZs941regeuKS4bk?cluster=devnet) |
+| **Arcium Cluster** | `945zoPijX8CA5c8dquvkq4ndqDWpPXGHekmVDjoDx26H` | [View ↗](https://solscan.io/account/945zoPijX8CA5c8dquvkq4ndqDWpPXGHekmVDjoDx26H?cluster=devnet) |
+| **Confidential Mint** | `Eu6LtYwCWvLQpsr2J1gdRRtsTQdUu6G3vnAQ8CCPLsRo` | [View ↗](https://solscan.io/token/Eu6LtYwCWvLQpsr2J1gdRRtsTQdUu6G3vnAQ8CCPLsRo?cluster=devnet) |
 
 ---
 
 ## 🧪 Testing
 
 ```bash
-npm test              # Run all tests
-npm run test:watch    # Watch mode
-npm run test:coverage # With coverage report
+npm test                 # Run all tests
+npm run test:watch       # Watch mode for development
+npm run test:coverage    # Generate coverage report
 ```
+
+<details>
+<summary><b>🔬 Test Coverage Areas</b></summary>
+
+- **Unit Tests:** Encryption utilities, ZK proof generation, compliance checks
+- **Integration Tests:** End-to-end payment flows, wallet interactions
+- **Smart Contract Tests:** Anchor program tests in `vaultpay_confidential/tests/`
+
+</details>
 
 ---
 
 ## 📦 Deployment
 
+<table>
+<tr>
+<td width="50%">
+
 ### Vercel (Recommended)
 
 ```bash
+npm i -g vercel
 vercel --prod
 ```
 
-### Railway / Docker
+</td>
+<td width="50%">
+
+### Docker / Railway
 
 ```bash
 docker build -t vaultpay .
-docker run -p 3000:3000 --env-file .env vaultpay
+docker run -p 3000:3000 \
+  --env-file .env vaultpay
 ```
+
+</td>
+</tr>
+</table>
 
 ---
 
 ## 🗺️ Roadmap
 
-| Phase | Status | Features |
-|:------|:------:|:---------|
-| **Phase 1: Core** | ✅ | Wallet auth, payee management, encrypted payments |
-| **Phase 2: Token-2022 CT** | ✅ | Confidential mint, ZK proofs, CLI bridge |
-| **Phase 3: Production** | ✅ | Co-signer, rate limiting, privacy animations |
-| **Phase 4: Mainnet** | 🔄 | Security audit, mainnet deployment |
+| Phase | Status | Milestone | Details |
+|:------|:------:|:----------|:--------|
+| **Phase 1** | ✅ Complete | Core Infrastructure | Wallet auth, payee CRUD, encrypted payments |
+| **Phase 2** | ✅ Complete | Token-2022 CT | Confidential mint, ZK proofs, CLI bridge |
+| **Phase 3** | ✅ Complete | Production Ready | Arcium MPC co-signer, compliance, animations |
+| **Phase 4** | 🔄 In Progress | Mainnet Launch | Security audit, mainnet deployment, stablecoin support |
 
-See [full roadmap](svp/ROADMAP.md) for details.
+<details>
+<summary><b>🎯 Phase 4 Checklist</b></summary>
+
+- [ ] Professional security audit (Halborn/OtterSec)
+- [ ] Mainnet program deployment
+- [ ] USDC confidential mint integration
+- [ ] Production compliance pipeline
+- [ ] Enterprise dashboard features
+
+</details>
+
+> 📖 See [full roadmap](svp/ROADMAP.md) for complete details
+
+---
+
+## 🔗 Resources
+
+<div align="center">
+
+| | | | |
+|:---:|:---:|:---:|:---:|
+| [🚀 **Live Demo**](https://vaultpay.vercel.app) | [📖 **Technical Spec**](VaultPay-Technical-Specification.md) | [🏗️ **Architecture**](svp/PRIVACY-ARCHITECTURE.md) | [🗺️ **Roadmap**](svp/ROADMAP.md) |
+
+</div>
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing`)
-5. Open a Pull Request
+We welcome contributions! Please see our workflow:
+
+```bash
+# 1. Fork & clone
+git clone https://github.com/YOUR_USERNAME/vaultpay.git
+
+# 2. Create feature branch
+git checkout -b feature/amazing-feature
+
+# 3. Make changes & test
+npm test
+
+# 4. Commit & push
+git commit -m "feat: Add amazing feature"
+git push origin feature/amazing-feature
+
+# 5. Open Pull Request
+```
+
+> 💡 **Tip:** Check out [good first issues](https://github.com/YOUR_USERNAME/vaultpay/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started!
 
 ---
 
 ## 📄 License
 
-Licensed under [GPL-3.0](LICENSE) (due to Arcium MPC dependency).
-
----
-
-## 🔗 Links
-
-| Resource | Link |
-|:---------|:-----|
-| 🌐 **Live Demo** | [vaultpay.vercel.app](https://vaultpay.vercel.app) |
-| 📖 **Technical Spec** | [VaultPay-Technical-Specification.md](VaultPay-Technical-Specification.md) |
-| 🏗️ **Architecture** | [PRIVACY-ARCHITECTURE.md](svp/PRIVACY-ARCHITECTURE.md) |
-| 🗺️ **Roadmap** | [ROADMAP.md](svp/ROADMAP.md) |
+This project is licensed under the [GNU General Public License v3.0](LICENSE) (required due to Arcium MPC dependency).
 
 ---
 
 <div align="center">
 
-### Built with support from
-
-[![Arcium](https://img.shields.io/badge/Arcium-MPC-8B5CF6?style=flat-square)](https://arcium.com)
-[![Range](https://img.shields.io/badge/Range-Compliance-22C55E?style=flat-square)](https://range.org)
-[![Squads](https://img.shields.io/badge/Squads-Multi--sig-EAB308?style=flat-square)](https://squads.so)
-[![Helius](https://img.shields.io/badge/Helius-RPC-F97316?style=flat-square)](https://helius.dev)
+### 🏆 Built for the Solana Ecosystem
 
 <br />
 
-**VaultPay** — Private Payroll for the Open Economy
+[![Arcium](https://img.shields.io/badge/Powered_by-Arcium_MPC-8B5CF6?style=for-the-badge&logoColor=white)](https://arcium.com)
+[![Range](https://img.shields.io/badge/Secured_by-Range_Compliance-22C55E?style=for-the-badge&logoColor=white)](https://range.org)
+[![Squads](https://img.shields.io/badge/Protected_by-Squads_Multisig-EAB308?style=for-the-badge&logoColor=white)](https://squads.so)
+[![Helius](https://img.shields.io/badge/Accelerated_by-Helius_RPC-F97316?style=for-the-badge&logoColor=white)](https://helius.dev)
 
-<sub>Made with 💜 for the Solana ecosystem</sub>
+<br />
+
+---
+
+<img src="svp/public/icons/icon-192.png" alt="VaultPay" width="48" />
+
+### **VaultPay**
+*Private Payroll for the Open Economy*
+
+<br />
+
+<sub>Made with 💜 by the VaultPay Team</sub>
+
+<br />
+
+[![Twitter](https://img.shields.io/badge/Twitter-@VaultPay-1DA1F2?style=flat-square&logo=twitter&logoColor=white)](https://twitter.com/vaultpay)
+[![Discord](https://img.shields.io/badge/Discord-Join_Us-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/vaultpay)
 
 </div>
