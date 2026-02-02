@@ -34,11 +34,6 @@
       "schedule": "0 0 * * *"
     }
   ],
-  "functions": {
-    "api/**/*.ts": {
-      "maxDuration": 30
-    }
-  },
   "env": {
     "NEXT_PUBLIC_SOLANA_NETWORK": "devnet"
   }
