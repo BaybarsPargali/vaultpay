@@ -40,7 +40,7 @@
     "@sqds/multisig": "^2.1.4",
     "@types/bn.js": "^5.2.0",
     "@upstash/ratelimit": "^2.0.8",
-    "@upstash/redis": "^1.36.1",
+    "@upstash/redis": "^1.36.2",
     "axios": "^1.6.5",
     "bn.js": "^5.2.2",
     "clsx": "^2.1.0",
